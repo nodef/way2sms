@@ -10,9 +10,7 @@ const CONTENT_TYPE = 'application/x-www-form-urlencoded; charset=UTF-8';
 function getCookie() {
   return new Promise((fres, frej) => {
     var options = {hostname: HOSTNAME};
-    console.log('getCookie:', options);
     var req = http.request(options, (res) => {
-      console.log('getCookie:', res.statusCode, res.headers);
       var cookies = res.headers['set-cookie'];
       fres(cookies[0].replace(/;.*/, ''));
     });
@@ -27,9 +25,7 @@ function reLogin(mob, pwd) {
     var data = querystring.stringify({mobileNo: mob, password: pwd, CatType: ''});
     var headers = {'Cookie': [cookie], 'Content-Type': CONTENT_TYPE, 'Content-Length': Buffer.byteLength(data)};
     var options = {hostname: HOSTNAME, path: '/re-login', method: 'POST', headers};
-    console.log('reLogin:', options);
     var req = http.request(options, (res) => {
-      console.log('reLogin:', res.statusCode, res.headers);
       if(res.statusCode===200) fres(cookie);
       else frej(new Error(`HTTP ${res.statusCode} returned!`));
     });
@@ -46,9 +42,7 @@ function smstoss(cok, to, msg) {
     var data = querystring.stringify({Token: token, message: msg, toMobile: to, ssaction: 'ss'});
     var headers = {'Cookie': [cok], 'Content-Type': CONTENT_TYPE, 'Content-Length': Buffer.byteLength(data)};
     var options = {hostname: HOSTNAME, path: '/smstoss', method: 'POST', headers};
-    console.log('smstoss:', options);
     var req = http.request(options, (res) => {
-      console.log('smstoss:', res.statusCode, res.headers);
       if(res.statusCode===200) fres();
       else frej(new Error(`HTTP ${res.statusCode} returned!`));
     });
@@ -59,7 +53,7 @@ function smstoss(cok, to, msg) {
 };
 
 reLogin('8895442590', 'Yaw2Sms77').then((cok) => {
-  smstoss(cok, '8895442590', 'demo2').then(() => {
+  smstoss(cok, '8895442590', 'my heart will go on and on for ever and ever').then(() => {
     console.log('sent');
   });
 });
