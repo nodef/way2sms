@@ -11,8 +11,12 @@ function getCookie() {
   return new Promise((fres, frej) => {
     var options = {hostname: HOSTNAME};
     var req = http.request(options, (res) => {
-      var cookies = res.headers['set-cookie'];
-      fres(cookies[0].replace(/;.*/, ''));
+      res.setEncoding('utf8');
+      res.on('data', () => 0);
+      res.on('end', () => {
+        var cookies = res.headers['set-cookie'];
+        fres(cookies[0].replace(/;.*/, ''));
+      });
     });
     req.on('error', frej);
     req.end();
@@ -26,8 +30,12 @@ function reLogin(mob, pwd) {
     var headers = {'Cookie': [cookie], 'Content-Type': CONTENT_TYPE, 'Content-Length': Buffer.byteLength(data)};
     var options = {hostname: HOSTNAME, path: '/re-login', method: 'POST', headers};
     var req = http.request(options, (res) => {
-      if(res.statusCode===200) fres(cookie);
-      else frej(new Error(`HTTP ${res.statusCode} returned!`));
+      res.setEncoding('utf8');
+      res.on('data', () => 0);
+      res.on('end', () => {
+        if(res.statusCode===200) fres(cookie);
+        else frej(new Error(`HTTP ${res.statusCode} returned!`));
+      });
     });
     req.on('error', frej);
     req.write(data);
@@ -43,8 +51,14 @@ function smstoss(cok, to, msg) {
     var headers = {'Cookie': [cok], 'Content-Type': CONTENT_TYPE, 'Content-Length': Buffer.byteLength(data)};
     var options = {hostname: HOSTNAME, path: '/smstoss', method: 'POST', headers};
     var req = http.request(options, (res) => {
-      if(res.statusCode===200) fres();
-      else frej(new Error(`HTTP ${res.statusCode} returned!`));
+      var response = '';
+      res.setEncoding('utf8');
+      res.on('data', (cnk) => response += cnk);
+      res.on('end', () => {
+        if(res.statusCode!==200) frej(new Error(`HTTP ${res.statusCode} returned!`));
+        else if(response!=='0') frej(new Error(`Response "${response}" returned!`));
+        fres();
+      });
     });
     req.on('error', frej);
     req.write(data);
@@ -52,8 +66,8 @@ function smstoss(cok, to, msg) {
   });
 };
 
-reLogin('8895442590', 'Yaw2Sms77').then((cok) => {
-  smstoss(cok, '8895442590', 'my heart will go on and on for ever and ever').then(() => {
+reLogin('9652372840', 'Yaw2Sms77').then((cok) => {
+  smstoss(cok, '8895442590', 'my heart will go for').then(() => {
     console.log('sent');
   });
 });
