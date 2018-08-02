@@ -28,20 +28,20 @@ cookieGet() {
   if [[ "$password" == "" ]]; then read -s -p "Password: " password; fi
   printf "${cr}\n"
   cookie=$(node "${dp0}index" reLogin "$mobileno" "$password")
-  if [[ "$?" != "0" ]]; then >&2 printf "${ce}Way2SMS re-login failed!${cr}"; exit; fi
+  if [[ "$?" != "0" ]]; then >&2 printf "${ce}Way2SMS re-login failed!${cr}\n"; exit; fi
 }
 
 # logout command
 logout() {
   if [ ! -f "$cookie_file" ]; then exit; fi
   rm -f "$cookie_file"
-  if [ -z "$q" ]; then printf "${cm}Way2SMS cookie removed.${cr}"; fi
+  if [ -z "$q" ]; then printf "${cm}Way2SMS cookie removed.${cr}\n"; fi
 };
 
 # relogin command
 reLogin() {
   cookieGet; mkdir -p "$cookie_dir"; echo "$cookie" > "$cookie_file"
-  if [ -z "$q" ]; then printf "${cm}Way2SMS cookie saved.${cr}"; fi
+  if [ -z "$q" ]; then printf "${cm}Way2SMS cookie saved.${cr}\n"; fi
 }
 
 # smstoss command
@@ -52,8 +52,8 @@ smstoss() {
   if [[ "$message" == "" ]]; then read -p "Message: " message; fi
   printf "${cr}"
   status=$(node "${dp0}index" smstoss "$cookie" "$tomobile" "$message" 2>&1)
-  if [[ "$status" != "" ]]; then >&2 printf "${ce}Way2SMS smstoss failed. $status${cr}"; exit; fi
-  if [ -z "$q" ]; then printf "${cm}Way2SMS message sent.${cr}"; fi
+  if [[ "$status" != "" ]]; then >&2 printf "${ce}Way2SMS smstoss failed. $status${cr}\n"; exit; fi
+  if [ -z "$q" ]; then printf "${cm}Way2SMS message sent.${cr}\n"; fi
 }
 
 
@@ -78,5 +78,5 @@ elif [[ "$command" == *"login" ]]; then reLogin
 elif [[ "$command" == "s"* ]]; then smstoss
 else
   if [ -z "$q" ]; then less "${dp0}README.md"
-  else >&2 printf "${ce}Bad command ${command}!${cr}"; fi
+  else >&2 printf "${ce}Bad command ${command}!${cr}\n"; fi
 fi
