@@ -3,9 +3,10 @@
 cr="\033[0m"; ci="\033[1m"; cm="\033[2m"; ce="\033[31m"
 cookie_dir="$HOME/.config/nodef/way2sms"
 cookie_file="$cookie_dir/cookie.ini"
-command=""; cookie=""; message=""; q=""
+command=""; message=""; q=""
 mobileno="$WAY2SMS_MOBILENO"
 password="$WAY2SMS_PASSWORD"
+cookie="$WAY2SMS_COOKIE"
 tomobile="$WAY2SMS_TOMOBILE"
 trap 'printf "${cr}\n"; exit' SIGINT
 

@@ -1,6 +1,6 @@
 {
   "name": "way2sms",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Send free SMS through Way2SMS.",
   "main": "index.js",
   "preferGlobal": true,
