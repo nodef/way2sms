@@ -2,6 +2,7 @@ const http = require('http');
 const querystring = require('querystring');
 
 
+// Globals
 const HOSTNAME = 'www.way2sms.com';
 const CONTENT_TYPE = 'application/x-www-form-urlencoded; charset=UTF-8';
 
@@ -65,9 +66,17 @@ function smstoss(cok, to, msg) {
     req.end();
   });
 };
+exports.reLogin = reLogin;
+exports.login = reLogin;
+exports.smstoss = smstoss;
+exports.send = smstoss;
 
-reLogin('9652372840', 'Yaw2Sms77').then((cok) => {
-  smstoss(cok, '8895442590', 'my heart will go for').then(() => {
-    console.log('sent');
-  });
-});
+
+// Main
+function main() {
+  const A = process.argv;
+  if(A[2]==='reLogin') reLogin(A[3], A[4]).then(console.log, e => console.error(e.message));
+  else if(A[2]==='smstoss') smstoss(A[3], A[4], A[5]).then(() => 0, e => console.error(e.message));
+  else console.error(1);
+};
+if(require.main===module) main();
