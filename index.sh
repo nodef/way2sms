@@ -11,6 +11,14 @@ tomobile="$WAY2SMS_TOMOBILE"
 trap 'printf "${cr}\n"; exit' SIGINT
 
 
+# present script directory
+psd() {
+  z="${BASH_SOURCE[0]}"
+  if [ -h "$z" ]; then z="$(readlink "$z")"; fi
+  cd "$(dirname "$0")" && cd "$(dirname "$z")" && pwd
+}
+dp0="$(psd)/"
+
 # get cookie
 cookieGet() {
   if [[ "$cookie" != "" ]]; then exit; fi
@@ -47,6 +55,7 @@ smstoss() {
   if [[ "$status" != "" ]]; then >&2 printf "${ce}Way2SMS smstoss failed. $status${cr}"; exit; fi
   if [ -z "$q" ]; then printf "${cm}Way2SMS message sent.${cr}"; fi
 }
+
 
 # read arguments
 command="$1"; shift
