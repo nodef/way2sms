@@ -1,6 +1,6 @@
 {
   "name": "way2sms",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Send free SMS through Way2SMS.",
   "main": "index.js",
   "preferGlobal": true,
@@ -28,7 +28,8 @@
     "interface",
     "command",
     "line",
-    "console"
+    "console",
+    "merferry"
   ],
   "author": "wolfram77@gmail.com",
   "license": "MIT",
